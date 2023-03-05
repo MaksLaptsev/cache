@@ -5,7 +5,6 @@ import ru.clevertec.cache.LRUCache;
 import org.assertj.core.api.Assertions;
 import ru.clevertec.cacheInterface.Cache;
 
-import java.util.Map;
 
 public class LRUCacheTest {
 

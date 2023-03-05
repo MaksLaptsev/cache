@@ -5,4 +5,6 @@ public interface Cache <K,V>{
     void add(K key,V value);
     boolean containsKey(K key);
     V remove(K key);
+    int size();
+
 }

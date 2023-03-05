@@ -73,6 +73,11 @@ public class LFUCache<K,V> implements Cache<K,V> {
         }else return null;
     }
 
+    @Override
+    public int size() {
+        return valueMap.size();
+    }
+
     private void deleteAndUpdate(K key, Node node, Node nodeToDelete) {
         int freq = countMap.get(key);
         freqMap.get(freq).remove(nodeToDelete);

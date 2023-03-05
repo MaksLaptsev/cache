@@ -7,6 +7,7 @@ public interface Dao <T>{
     List<T> getAll();
     void deleteById(int id);
     void delete(T o);
+    void delete(int id);
     void update(T o);
     void save(T o);
 }
