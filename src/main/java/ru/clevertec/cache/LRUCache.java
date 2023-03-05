@@ -9,7 +9,7 @@ public class LRUCache<K,V> extends LinkedHashMap<K,V> implements Cache<K,V> {
     private final int maxSize;
 
     public LRUCache(int cacheSize){
-        super(cacheSize,0.75f,true);
+        super(cacheSize,1f,true);
         this.maxSize = cacheSize;
     }
 
@@ -24,7 +24,7 @@ public class LRUCache<K,V> extends LinkedHashMap<K,V> implements Cache<K,V> {
 
     @Override
     protected boolean removeEldestEntry(Map.Entry eldest) {
-        return size() >= maxSize;
+        return size()-1 >= maxSize;
     }
 
 }

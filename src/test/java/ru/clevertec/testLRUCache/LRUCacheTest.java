@@ -5,6 +5,8 @@ import ru.clevertec.cache.LRUCache;
 import org.assertj.core.api.Assertions;
 import ru.clevertec.cacheInterface.Cache;
 
+import java.util.Map;
+
 public class LRUCacheTest {
 
     @Test
@@ -24,8 +26,12 @@ public class LRUCacheTest {
         lruCache.add(1,"test1");
         lruCache.add(2,"test2");
         lruCache.add(3,"test3");
-        lruCache.add(4,"test4");
         lruCache.get(1);
-        Assertions.assertThat(lruCache.containsKey(2)).isEqualTo(false);
+        lruCache.get(2);
+        lruCache.add(4,"test4");
+        lruCache.add(5,"test5");
+
+        Assertions.assertThat(lruCache.containsKey(3)).isEqualTo(false);
+
     }
 }
