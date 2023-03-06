@@ -2,10 +2,10 @@ package ru.clevertec.factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.log4j.Logger;
 import ru.clevertec.cache.LFUCache;
 import ru.clevertec.cache.LRUCache;
 import ru.clevertec.cacheInterface.Cache;
@@ -13,16 +13,18 @@ import java.io.IOException;
 import java.net.URL;
 
 public class CacheFactory<K,V> {
+    private static final Logger logger = Logger.getLogger(CacheFactory.class);
     private String initializeParamsFileName = "application.yml";
     public Cache<K,V> cacheInitialize() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         URL path = Thread.currentThread().getContextClassLoader().getResource(initializeParamsFileName);
         try {
             YamlParams yamlParams = mapper.readValue(path,YamlParams.class);
+            logger.debug("Load params: type and size for cache from file: "+initializeParamsFileName);
             return getCacheWithType(yamlParams.typeCache, yamlParams.cacheSize);
         }catch (IOException e){
-            System.out.println("Error to read YamlParamsFile");
-            System.out.println("Initialize with default size: 10 and Type: LRU");
+            logger.error("Error to read YamlParamsFile, fileName: "+initializeParamsFileName);
+            logger.warn("Initialize with default size: 10 and Type: LRU");
         }
         return getCacheWithType("LRU",10);
     }

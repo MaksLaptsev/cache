@@ -1,6 +1,7 @@
 package ru.clevertec.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,10 +20,12 @@ import java.util.regex.Pattern;
 
 @Aspect
 public class DaoPersonCacheAspect {
+    static private final Logger logger = Logger.getLogger(DaoPersonCacheAspect.class);
     private final Cache<Integer, Person> cache;
 
     public DaoPersonCacheAspect() {
         this.cache = new CacheFactory<Integer,Person>().cacheInitialize();
+        logger.info("Initialize Cache type: "+cache.getType());
     }
 
     @Pointcut("execution(* ru.clevertec.dao.PersonDao.*(..))")
@@ -33,7 +36,6 @@ public class DaoPersonCacheAspect {
 
     @Around("personDaoMethod() && personDaoPUT()")
     public Object personDaoPUT(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("CACHE SIZE IS: "+cache.size());
         MethodType methodType = ((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(CrudAnnotation.class).type();
 
         boolean b = switch (methodType){
@@ -59,11 +61,11 @@ public class DaoPersonCacheAspect {
         if (checkCorrectPerson(person)){
             cache.remove(person.getId());
             cache.add(person.getId(),person);
-            System.out.println("Person update and save - id: "+person.getId());
+            logger.info("Person update and save in BD and CACHE - id: "+person.getId());
             return true;
         }else {
-            System.out.println("UnCorrect EMAIL ");
-            System.out.println("Person doesnt save");
+            logger.warn("UnCorrect EMAIL - "+person.getEmail());
+            logger.warn("Person doesnt save");
             return false;
         }
 
@@ -93,8 +95,8 @@ public class DaoPersonCacheAspect {
             System.out.println("Person save id: "+person.getId());
             return true;
         }else {
-            System.out.println("UnCorrect EMAIL ");
-            System.out.println("Person doesnt save");
+            logger.warn("UnCorrect EMAIL - "+person.getEmail());
+            logger.warn("Person doesnt save");
             return false;
         }
     }
@@ -103,23 +105,23 @@ public class DaoPersonCacheAspect {
         Class<?>[] classes = ((MethodSignature)joinPoint.getSignature()).getMethod().getParameterTypes();
         if (classes[0].equals(int.class)){
             if (cache.containsKey((Integer) joinPoint.getArgs()[0])){
-                System.out.println("Get Person id: "+joinPoint.getArgs()[0]+" from CACHE");
+                logger.info("Get Person id: "+joinPoint.getArgs()[0]+" from CACHE");
                 return cache.get((Integer) joinPoint.getArgs()[0]);
             }else {
                 Person person = (Person) joinPoint.proceed();
                 cache.add(person.getId(),person);
-                System.out.println("Get Person id: "+person.getId()+" from BD and add to CACHE");
+                logger.info("Get Person id: "+person.getId()+" from BD and add to CACHE");
                 return person;
             }
         } else if (classes[0].equals(Person.class)) {
             Person person = (Person) joinPoint.getArgs()[0];
             if(cache.containsKey(person.getId())){
-                System.out.println("Get Person id: "+person.getId()+" from CACHE");
+                logger.info("Get Person id: "+person.getId()+" from CACHE");
                 return cache.get(person.getId());
             }else {
                 Person person1 = (Person) joinPoint.proceed();
                 cache.add(person1.getId(),person1);
-                System.out.println("Get Person id: "+person1.getId()+" from BD and add to CACHE");
+                logger.info("Get Person id: "+person1.getId()+" from BD and add to CACHE");
                 return person1;
             }
         }else return null;

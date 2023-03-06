@@ -6,5 +6,6 @@ public interface Cache <K,V>{
     boolean containsKey(K key);
     V remove(K key);
     int size();
+    Enum<?> getType();
 
 }

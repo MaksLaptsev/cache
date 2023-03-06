@@ -1,17 +1,12 @@
 package ru.clevertec.dao;
 
-import ru.clevertec.annotation.CorrectEmail;
 import ru.clevertec.annotation.CrudAnnotation;
 import ru.clevertec.annotation.MethodType;
-import ru.clevertec.annotation.PUT;
 import ru.clevertec.entity.Person;
 import ru.clevertec.service.LoadEntityFromJson;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PersonDao implements Dao<Person>{

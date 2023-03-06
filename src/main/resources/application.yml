@@ -1,2 +1,2 @@
 typeCache: LRU
-cacheSize: 10
+cacheSize: 5

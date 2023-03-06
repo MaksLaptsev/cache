@@ -1,6 +1,7 @@
 package ru.clevertec.cache;
 
 import ru.clevertec.cacheInterface.Cache;
+import ru.clevertec.factory.CacheType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ public class LFUCache<K,V> implements Cache<K,V> {
     private Map<K,Integer> countMap;
     private TreeMap<Integer,DoubleLinkedList> freqMap;
     private int size;
+    private final CacheType cacheType = CacheType.LFU;
 
     public LFUCache(int cacheSize){
         this.size = cacheSize;
@@ -76,6 +78,11 @@ public class LFUCache<K,V> implements Cache<K,V> {
     @Override
     public int size() {
         return valueMap.size();
+    }
+
+    @Override
+    public Enum<?> getType() {
+        return cacheType;
     }
 
     private void deleteAndUpdate(K key, Node node, Node nodeToDelete) {
