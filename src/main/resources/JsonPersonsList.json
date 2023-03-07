@@ -1,0 +1,12 @@
+[{"id":1,"name":"Georg","lastName":"Last","email":"employee1@mydomain.by","phoneNumber":"+375221885412"},
+  {"id":2,"name":"Vasya","lastName":"Biggest","email":"Vasya@gmail.com","phoneNumber":"+375221885412"},
+  {"id":3,"name":"Leonid","lastName":"Strong","email":"Leonid@gmail.com","phoneNumber":"+375221885412"},
+  {"id":4,"name":"Jesus","lastName":"Crist","email":"Jesus@god.org","phoneNumber":"+375221885412"},
+  {"id":5,"name":"Poll","lastName":"Leo","email":"wiskas@tut.by","phoneNumber":"+375221885412"},
+  {"id":6,"name":"Elizabet","lastName":"Sion","email":"asdasd@fasd.com","phoneNumber":"+375221885412"},
+  {"id":7,"name":"Janna","lastName":"Lion","email":"janna.lion@list.ru","phoneNumber":"+375221885412"},
+  {"id":8,"name":"Luci","lastName":"Forech","email":"asdasd@fasd.com","phoneNumber":"+375221885412"},
+  {"id":9,"name":"Margo","lastName":"Robbin","email":"asdasd@fasd.com","phoneNumber":"+375221885412"},
+  {"id":10,"name":"Fedor","lastName":"Fedor","email":"asdasd@fasd.com","phoneNumber":"+375221885412"},
+  {"id":11,"name":"Stas","lastName":"Ivanov","email":"asdasd@fasd.com","phoneNumber":"+375221885412"},
+  {"id":12,"name":"Mihail","lastName":"First","email":"asdasd@fasd.com","phoneNumber":"+375221885412"}]
