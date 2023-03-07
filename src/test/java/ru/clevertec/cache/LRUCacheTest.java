@@ -1,4 +1,4 @@
-package ru.clevertec.testLRUCache;
+package ru.clevertec.cache;
 
 import org.junit.jupiter.api.Test;
 import ru.clevertec.cache.LRUCache;

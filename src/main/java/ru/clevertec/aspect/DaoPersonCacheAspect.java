@@ -13,6 +13,7 @@ import ru.clevertec.annotation.MethodType;
 import ru.clevertec.cacheInterface.Cache;
 import ru.clevertec.entity.Person;
 import ru.clevertec.factory.CacheFactory;
+import ru.clevertec.util.XmlParserUtil;
 
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -22,10 +23,12 @@ import java.util.regex.Pattern;
 public class DaoPersonCacheAspect {
     static private final Logger logger = Logger.getLogger(DaoPersonCacheAspect.class);
     private final Cache<Integer, Person> cache;
+    private final XmlParserUtil xmlParserUtil;
 
     public DaoPersonCacheAspect() {
         this.cache = new CacheFactory<Integer,Person>().cacheInitialize();
-        logger.info("Initialize Cache type: "+cache.getType());
+        xmlParserUtil = XmlParserUtil.getInstance();
+        logger.info("Initialize XmlParseUtil and Cache with type: "+cache.getType());
     }
 
     @Pointcut("execution(* ru.clevertec.dao.PersonDao.*(..))")
@@ -106,27 +109,32 @@ public class DaoPersonCacheAspect {
         if (classes[0].equals(int.class)){
             if (cache.containsKey((Integer) joinPoint.getArgs()[0])){
                 logger.info("Get Person id: "+joinPoint.getArgs()[0]+" from CACHE");
-                return cache.get((Integer) joinPoint.getArgs()[0]);
+                Person person = cache.get((Integer) joinPoint.getArgs()[0]);
+                isWriteToFileXml(person);
+                return person;
             }else {
                 Person person = (Person) joinPoint.proceed();
                 cache.add(person.getId(),person);
                 logger.info("Get Person id: "+person.getId()+" from BD and add to CACHE");
+                isWriteToFileXml(person);
                 return person;
             }
         } else if (classes[0].equals(Person.class)) {
             Person person = (Person) joinPoint.getArgs()[0];
             if(cache.containsKey(person.getId())){
                 logger.info("Get Person id: "+person.getId()+" from CACHE");
-                return cache.get(person.getId());
+                Person person1 = cache.get(person.getId());
+                isWriteToFileXml(person1);
+                return person1;
             }else {
                 Person person1 = (Person) joinPoint.proceed();
                 cache.add(person1.getId(),person1);
                 logger.info("Get Person id: "+person1.getId()+" from BD and add to CACHE");
+                isWriteToFileXml(person1);
                 return person1;
             }
         }else return null;
     }
-
 
 
     private boolean checkCorrectPerson(Person person) {
@@ -143,6 +151,13 @@ public class DaoPersonCacheAspect {
             }
         }
         return false;
+    }
+
+    private void isWriteToFileXml(Person person){
+        if (xmlParserUtil.isWriteFile()){
+            xmlParserUtil.writeAsFileXmlFromObj(person);
+            logger.info("Person with id: "+person.getId()+ " written to a file");
+        }
     }
 
 
