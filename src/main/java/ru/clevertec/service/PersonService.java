@@ -5,7 +5,7 @@ import ru.clevertec.entity.Person;
 
 public class PersonService implements Service<Person>{
 
-    private final PersonDao personDao;
+    private PersonDao personDao;
 
     public PersonService() {
         this.personDao = new PersonDao();

@@ -1,6 +1,5 @@
 package ru.clevertec.aspect;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,7 +13,6 @@ import ru.clevertec.cacheInterface.Cache;
 import ru.clevertec.entity.Person;
 import ru.clevertec.factory.CacheFactory;
 import ru.clevertec.util.XmlParserUtil;
-
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -171,6 +169,5 @@ public class DaoPersonCacheAspect {
             logger.info("Person with id: "+person.getId()+ " written to a file");
         }
     }
-
 
 }
