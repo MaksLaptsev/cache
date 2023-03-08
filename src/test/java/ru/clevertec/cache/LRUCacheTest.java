@@ -1,10 +1,9 @@
 package ru.clevertec.cache;
 
 import org.junit.jupiter.api.Test;
-import ru.clevertec.cache.LRUCache;
-import org.assertj.core.api.Assertions;
 import ru.clevertec.cacheInterface.Cache;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LRUCacheTest {
 
@@ -14,9 +13,9 @@ public class LRUCacheTest {
         lruCache.add(1,"test1");
         lruCache.add(2,"test2");
         lruCache.add(3,"test3");
-        Assertions.assertThat(lruCache.get(1)).isEqualTo("test1");
-        Assertions.assertThat(lruCache.get(2)).isEqualTo("test2");
-        Assertions.assertThat(lruCache.get(3)).isEqualTo("test3");
+        assertThat(lruCache.get(1)).isEqualTo("test1");
+        assertThat(lruCache.get(2)).isEqualTo("test2");
+        assertThat(lruCache.get(3)).isEqualTo("test3");
     }
 
     @Test
@@ -30,7 +29,7 @@ public class LRUCacheTest {
         lruCache.add(4,"test4");
         lruCache.add(5,"test5");
 
-        Assertions.assertThat(lruCache.containsKey(3)).isEqualTo(false);
-
+        assertThat(lruCache.containsKey(3)).isEqualTo(false);
     }
+
 }

@@ -2,11 +2,16 @@ package ru.clevertec.cache;
 
 import ru.clevertec.cacheInterface.Cache;
 import ru.clevertec.factory.CacheType;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * This class is an implementation of the LFU caching algorithm
+ *      cached data is stored in a collection
+ * @param <K> - an object that acts as a Key in the collection
+ * @param <V> - an object that acts as a Value in the collection
+ */
 public class LFUCache<K,V> implements Cache<K,V> {
     private Map<K,Node> valueMap;
     private Map<K,Integer> countMap;

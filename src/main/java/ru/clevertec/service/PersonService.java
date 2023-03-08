@@ -3,9 +3,9 @@ package ru.clevertec.service;
 import ru.clevertec.dao.PersonDao;
 import ru.clevertec.entity.Person;
 
-public class PersonService implements Service{
+public class PersonService implements Service<Person>{
 
-    private final PersonDao personDao;
+    private PersonDao personDao;
 
     public PersonService() {
         this.personDao = new PersonDao();
@@ -30,4 +30,5 @@ public class PersonService implements Service{
     public void PUT(Person person) {
         personDao.update(person);
     }
+
 }

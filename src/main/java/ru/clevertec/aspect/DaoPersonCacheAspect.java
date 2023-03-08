@@ -1,6 +1,5 @@
 package ru.clevertec.aspect;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,16 +13,19 @@ import ru.clevertec.cacheInterface.Cache;
 import ru.clevertec.entity.Person;
 import ru.clevertec.factory.CacheFactory;
 import ru.clevertec.util.XmlParserUtil;
-
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class is used as an aspect to synchronize the operation of the dao with the cache
+ */
 @Aspect
 public class DaoPersonCacheAspect {
     static private final Logger logger = Logger.getLogger(DaoPersonCacheAspect.class);
     private final Cache<Integer, Person> cache;
     private final XmlParserUtil xmlParserUtil;
+
 
     public DaoPersonCacheAspect() {
         this.cache = new CacheFactory<Integer,Person>().cacheInitialize();
@@ -37,10 +39,18 @@ public class DaoPersonCacheAspect {
     @Pointcut("@annotation(ru.clevertec.annotation.CrudAnnotation)")
     public void personDaoPUT(){}
 
+    /**
+     * In this method, synchronization occurs between the methods of the dao class and the cache
+     * @param joinPoint the executable method that was intercepted by the aspect
+     * @return returns the desired object
+     * @throws Throwable
+     */
     @Around("personDaoMethod() && personDaoPUT()")
     public Object personDaoPUT(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodType methodType = ((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(CrudAnnotation.class).type();
-
+        /**
+         * determining the methods required for the call based on the annotations of the source method from dao
+         */
         boolean b = switch (methodType){
             case PUT -> put(joinPoint);
             case GET -> false;
@@ -159,6 +169,5 @@ public class DaoPersonCacheAspect {
             logger.info("Person with id: "+person.getId()+ " written to a file");
         }
     }
-
 
 }
